@@ -2,10 +2,7 @@ package edu.rosehulman.quotabilling;
 
 public class Paths {
 
-  public static String ADD_USER = "partner/:partnerId/quota/:quotaId/user/:userId";
+  public static String ADD_USER = "partner/:partnerId/product/:productId/user/:userId";
 
-
-  public static String BILLING_BASE = "http://localhost:8085/"; // TODO put this in a config file
-  
-  public static String ADD_USER_TO_BILLING = "http://localhost:8085/addUser/";
+  public static String BILLING_BASE = "http://srproj-18.csse.rose-hulman.edu:8085/"; // TODO: put this in a config file
 }

@@ -17,22 +17,15 @@ public class BillingClient {
     return instance;
   }
 
-  public void addUser(String partnerId, String quotaId, String userId) throws Exception {
+  public boolean addUser(String partnerId, String productId, String userId) throws Exception {
     // Send Billing the user
 
-    HttpResponse<String> response = Unirest.post(Paths.ADD_USER_TO_BILLING + "partner/{partnerId}/quota/{quotaId}/user/{userId}")
+    HttpResponse<String> response = Unirest.post(Paths.BILLING_BASE + "partner/{partnerId}/product/{productId}/user/{userId}")
         .routeParam("partnerId", partnerId)
-        .routeParam("quotaId", quotaId)
+        .routeParam("product", productId)
         .routeParam("userId", userId)
         .asString();
 
-    if (response.getStatus() != 200) {
-    	System.out.println(response.getStatus());
-    	throw new Exception();
-    }
-  }
-  
-  public void addPartner(String partnerId){
-	  
+    return response.getStatus() == 200;
   }
 }
