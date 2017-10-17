@@ -17,7 +17,8 @@ public class Application {
    get("/test", (req, res) -> "hello");
     
     post(Paths.ADD_USER, new AddUserController()); // Consume an AddUser call from Quota
-    post("/addPartner", (req, res) -> {
+    
+    /*post("/addPartner", (req, res) -> {
       return db.addPartner("4", "testPartner", "NEW_KEY", "Secret_Pass", "1");
        AddBillingController()
     });
@@ -28,7 +29,7 @@ public class Application {
     });
     
     post("/addUserToProduct", (req, res) -> {
-      return db.addUserToProduct(1, 6);*/
-    }); 
+      return db.addUserToProduct(1, 6);
+    }); */
   }
 }
