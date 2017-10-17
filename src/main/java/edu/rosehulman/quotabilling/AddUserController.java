@@ -13,8 +13,10 @@ public class AddUserController implements Route {
     String userId = request.params(":userId");
 
     // Add the user to our database
-    Database.getInstance().addUser(partnerId, productId, userId);
-
+    Database db = Database.getInstance();
+    db.addUser(Integer.parseInt(userId));
+    db.addUserToProduct(Integer.parseInt(productId), Integer.parseInt(userId));
+    db.addProductToPartner(Integer.parseInt(partnerId), Integer.parseInt(productId));
     // Send the user to Billing
     //BillingClient.getInstance().addUser(partnerId, productId, userId);
 
