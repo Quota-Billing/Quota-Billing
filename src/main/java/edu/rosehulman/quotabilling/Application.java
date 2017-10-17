@@ -1,8 +1,8 @@
 package edu.rosehulman.quotabilling;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
+
 import static spark.Spark.*;
+import static spark.Spark.get;
 import static spark.Spark.staticFiles;
 
 public class Application {
@@ -31,5 +31,7 @@ public class Application {
     post("/addUserToProduct", (req, res) -> {
       return db.addUserToProduct(1, 6);
     }); */
+
+    post(Paths.ADD_USER, new AddToBillingController()); // Consume an AddUser call from Quota
   }
 }
