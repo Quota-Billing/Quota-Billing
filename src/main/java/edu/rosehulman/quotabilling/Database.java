@@ -61,7 +61,7 @@ public class Database {
   }
   
   // add a simple user
-  public String addUser(int id) {
+  public String addUser(String id, String productId, String partnerId) {
  
     
     MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://team18:123456@ds113785.mlab.com:13785/quotabillingshare"));
@@ -69,7 +69,7 @@ public class Database {
     try {
             MongoDatabase database = mongoClient.getDatabase("quotabillingshare");
             MongoCollection<Document> collection = database.getCollection("User");
-            Document doc = new Document("_id", id);         
+            Document doc = new Document("_id", id).append("partnerId", partnerId).append("productId", productId);         
            // .append("versions", Arrays.asList("v3.2", "v3.0", "v2.6"))
             collection.insertOne(doc);
             
@@ -130,7 +130,7 @@ public class Database {
     return "ok";
     
   }
-  
+
 
   
 }

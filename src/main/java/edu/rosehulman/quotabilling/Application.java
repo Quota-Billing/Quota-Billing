@@ -12,6 +12,11 @@ public class Application {
     staticFiles.location("/public");
 
     get("/test", (req, res) -> "hello");
+    
+//    get("/getUser/partner/:partnerId/product/:productId/user/:userId", (req, res) ->{
+//    	return Database.getInstance().getUser();
+//    });
+    // probably use later;
 
     post(Paths.ADD_USER, new AddUserController()); // Consume an AddUser call from Quota
   }
