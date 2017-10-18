@@ -22,7 +22,7 @@ public class BillingClient {
 
     HttpResponse<String> response = Unirest.post(Paths.BILLING_BASE + "addUser/partner/{partnerId}/product/{productId}/user/{userId}")
         .routeParam("partnerId", partnerId)
-        .routeParam("product", productId)
+        .routeParam("productId", productId)
         .routeParam("userId", userId)
         .asString();
 
