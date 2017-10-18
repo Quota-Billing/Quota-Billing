@@ -1,23 +1,11 @@
 package edu.rosehulman.quotabilling;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
 
 public class Database {
 
@@ -45,6 +33,7 @@ public class Database {
     partnerCollection.updateOne(and(eq("_id", partnerId), eq("products", productId)), userDocument); // TODO This does not work, not using lists
   }*/
   
+  // add a partner
   public String addPartner(String partnerId, String name, String apiKey, String password, String product) {
  
     
@@ -71,6 +60,7 @@ public class Database {
     
   }
   
+  // add a simple user
   public String addUser(int id) {
  
     
@@ -94,7 +84,7 @@ public class Database {
   }
 
 
-
+  // add user to product
   public String addUserToProduct(int i, int productId) {
     MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://team18:123456@ds113785.mlab.com:13785/quotabillingshare"));
     
@@ -119,6 +109,7 @@ public class Database {
     return "ok";
   }
 
+  // add product to partner in the table
   public String addProductToPartner(int partnerId, int productId) {
     MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://team18:123456@ds113785.mlab.com:13785/quotabillingshare"));
     

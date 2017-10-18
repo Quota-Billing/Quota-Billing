@@ -6,21 +6,24 @@ import spark.Route;
 
 public class AddUserController implements Route {
 
-  @Override
-  public Object handle(Request request, Response response) throws Exception {
-    String partnerId = request.params(":partnerId");
-    String productId = request.params(":productId");
-    String userId = request.params(":userId");
+	@Override
+	public Object handle(Request request, Response response) throws Exception {
+		String partnerId = request.params(":partnerId");
+		String productId = request.params(":productId");
+		String userId = request.params(":userId");
 
-    // TODO: Add the user to our database
+		// TODO: Add the user to our database
 
-    // TODO: Send the user to Billing
-    // boolean sentToBilling = BillingClient.getInstance().addUser(partnerId, productId, userId);
-    // if (!sentToBilling) {
-    //    throw new Exception();
-    // }
+		// .partnerId.TODO: Send the user to Billing
+		boolean sentToBilling = BillingClient.getInstance().addUser(partnerId, productId, userId);
+		if (!sentToBilling) {
+			throw new Exception();
+		}
+		// Add the user to our database
 
-    // Return to Quota a success
-    return "";
-  }
+		// Send the user to Billing
+
+		// Return to Quota a success
+		return "";
+	}
 }
