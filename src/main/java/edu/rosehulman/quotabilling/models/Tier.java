@@ -12,6 +12,8 @@ public class Tier {
 	@Property
 	private String name;
 	@Property
+	private String tierId;
+	@Property
 	private int max; // TODO: This might need to be changed to BigInt or
 	@Property
 	private int value;
@@ -23,20 +25,21 @@ public class Tier {
 		
 	}
 	
-	public Tier(ObjectId id, String name, int max, int value, double price) {
-		this.id = id;
+	public Tier(String id, String name, int max, int value, double price) {
+		this.id = new ObjectId();
+		this.tierId = id;
 		this.name = name;
 		this.max = max;
 		this.value = value;
 		this.price = price;
 	}
 
-	public ObjectId getId() {
-		return id;
+	public String getId() {
+		return this.tierId;
 	}
 
-	public void setId(ObjectId id) {
-		this.id = id;
+	public void setId(String id) {
+		this.tierId = id;
 	}
 
 	public String getName() {
@@ -73,6 +76,6 @@ public class Tier {
 
 	@Override
 	public String toString() {
-		return "Tier: " + this.id + "\n";
+		return "Tier: " + this.tierId + "\n";
 	}
 }

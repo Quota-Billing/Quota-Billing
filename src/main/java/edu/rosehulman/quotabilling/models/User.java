@@ -1,6 +1,8 @@
 package edu.rosehulman.quotabilling.models;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
@@ -9,8 +11,10 @@ import org.mongodb.morphia.annotations.Reference;
 
 
 public class User {
+	@Id
+	private ObjectId id;
 	@Property("id")
-	private String id;
+	private String userId;
 	@Reference
 	private Product product;
 	@Reference
@@ -21,13 +25,14 @@ public class User {
 	}
 	
 	public User(String id, Product product, Partner partner){
-		this.id = id;
+		this.id = new ObjectId();
+		this.userId = id;
 		this.product = product;
 		this.partner = partner;
 	}
 	
 	public String getId(){
-		return this.id;
+		return this.userId;
 	}
 	
 	public Product getProductId(){
