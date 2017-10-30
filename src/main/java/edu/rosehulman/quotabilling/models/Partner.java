@@ -16,15 +16,20 @@ public class Partner {
 	private HashMap<String, Product> products = new HashMap<String, Product>();
 	@Property
 	private String partnerId;
+	@Property
+	private String apikey;
+	@Property
+	private String password;
 
 	public Partner() {
 
 	}
 
-	public Partner(String partnerId, String name) {
+	public Partner(String partnerId, String name, String apikey) {
 		this.id = new ObjectId();
 		this.partnerId = partnerId;
 		this.name = name;
+		this.apikey = apikey;
 	}
 
 	public void addProduct(Product product) {
@@ -53,6 +58,10 @@ public class Partner {
 
 	public String getName() {
 		return this.name;
+	}
+	
+	public void setPassword(String password){
+		this.password = password;
 	}
 
 	@Override

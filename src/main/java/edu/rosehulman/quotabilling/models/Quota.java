@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
@@ -17,7 +18,7 @@ public class Quota {
 	private String type;
 	@Property
 	private String quotaId;
-	@Property
+	@Embedded
 	private List<Tier> tiers = new ArrayList<Tier>();
 
 	public Quota() {
