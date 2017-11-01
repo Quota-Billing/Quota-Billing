@@ -16,10 +16,10 @@ public class AddUserController implements Route {
 		// TODO: Add the user to our database
 
 		// .partnerId.TODO: Send the user to Billing
-		boolean sentToBilling = BillingClient.getInstance().addUser(partnerId, productId, userId);
-		if (!sentToBilling) {
-			throw new Exception();
-		}
+//		boolean sentToBilling = BillingClient.getInstance().addUser(partnerId, productId, userId);
+//		if (!sentToBilling) {
+//			throw new Exception();
+//		}
 		// Add the user to our database
 
 		// Send the user to Billing
