@@ -1,144 +1,161 @@
 package edu.rosehulman.quotabilling;
 
-import org.bson.Document;
+import java.util.List;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 
 import edu.rosehulman.quotabilling.models.Partner;
 import edu.rosehulman.quotabilling.models.Product;
+import edu.rosehulman.quotabilling.models.Quota;
+import edu.rosehulman.quotabilling.models.Tier;
 import edu.rosehulman.quotabilling.models.User;
 
 public class Database {
 
-  private static Database instance;
+	private static Database instance;
 
-  private MongoCollection<Document> partnerCollection;
-  private MongoClient mongoClient;
-  private MongoDatabase database;
-  private Datastore datastore;
-  private Database() {
-   /* MongoClient mongoClient = new MongoClient("localhost", 27017); // TODO set these in config
-    MongoDatabase database = mongoClient.getDatabase("quotabilling");
-    partnerCollection = database.getCollection("partner");*/
-	  this.mongoClient = new MongoClient(new MongoClientURI("mongodb://team18:123456@ds113785.mlab.com:13785/quotabillingshare"));
-	  this.database = mongoClient.getDatabase("quotabillingshare");
-	  Morphia morphia = new Morphia();
-	  morphia.mapPackage("edu.rosehulman.quotabilling");
-	  this.datastore = morphia.createDatastore(this.mongoClient, "quotabillingshare");
-	  
-  }
+	private MongoClient mongoClient;
+	private Datastore datastore;
 
-  public static synchronized Database getInstance() {
-    if (instance == null) {
-      instance = new Database();
-    }
-    return instance;
-  }
+	private Database() {
+		this.mongoClient = new MongoClient(
+				new MongoClientURI("mongodb://team18:123456@ds113785.mlab.com:13785/quotabillingshare"));
+		Morphia morphia = new Morphia();
+		morphia.mapPackage("edu.rosehulman.quotabilling");
+		this.datastore = morphia.createDatastore(this.mongoClient, "quotabillingshare");
+	}
 
-  /*public void addUser(String partnerId, String productId, String userId) {
-    Document userDocument = new Document("$set", new Document("_id", partnerId)
-        .append("products", new Document("_id", productId)
-            .append("users", new Document("_id", userId))));
-    partnerCollection.updateOne(and(eq("_id", partnerId), eq("products", productId)), userDocument); // TODO This does not work, not using lists
-  }*/
-  
-  // add a partner
-  public String addPartner(String partnerId, String name, String apiKey, String password) {
-     
-    try {
-//            MongoCollection<Document> collection = database.getCollection("Partner");
-//            Document doc = new Document("_id", partnerId)
-//                    .append("name", name)
-//                    .append("api_key", apiKey)
-//                    .append("password", password)
-//                    .append("product", product);           
-           // .append("versions", Arrays.asList("v3.2", "v3.0", "v2.6"))
-//            collection.insertOne(doc);
-    		Partner partner= new Partner(partnerId, name, apiKey);
-    		partner.setPassword(password);
-    		this.datastore.save(partner);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            mongoClient.close();
-        }
-    
-    return "ok";
-    
-  }
-  
-  // add a simple user
-  public String addUser(String id, String productId, String partnerId) {
-     
-    try {
-//            MongoCollection<Document> collection = database.getCollection("User");
-//            Document doc = new Document("_id", id).append("partnerId", partnerId).append("productId", productId);         
-//           // .append("versions", Arrays.asList("v3.2", "v3.0", "v2.6"))
-//            collection.insertOne(doc);
-    		Product product = datastore.createQuery(Product.class).field("productId").equal(productId).asList().get(0);
-    		Partner partner = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList().get(0);
-    		User user = new User(id, product, partner);
-    		this.datastore.save(user);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            mongoClient.close();
-        }
-    
-    return "ok";
-    
-  }
+	public static synchronized Database getInstance() {
+		if (instance == null) {
+			instance = new Database();
+		}
+		return instance;
+	}
+	
 
+	// add a partner
+	public String addPartner(String partnerId, String name, String apiKey, String password) {
+		try {
+			Partner partner = new Partner(partnerId, name, apiKey);
+			partner.setPassword(password);
+			this.datastore.save(partner);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return "ok";
+	}
 
-  // add user to product
-//  public String addUserToProduct(int i, int productId) {    
-//    try {
-//            //MongoCollection<Document> collection = database.getCollection("Product");                    
-//       /*     DBObject findQuery = new BasicDBObject("_id", 1);
-//            DBObject listItem = new BasicDBObject("user", 5);
-//            DBObject updateQuery = new BasicDBObject("$push", listItem);*/
-//            //collection.updateOne(new Document("_id", productId),
-//                //new Document("$push", new Document("user", i)));
-//            
-//            
-//    } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            mongoClient.close();
-//        }
-//    
-//    return "ok";
-//  }
+	public String addQuota(String partnerId, String productId, String quotaId, String name, String type) {
+		try {
+			List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+			if (partners.size() == 0) {
+				System.out.println("wrong partnerId"); // debugging
+				return "Wrong partnerId";
+			}
+			Partner partner = partners.get(0);
+			Product product = partner.getProduct(productId);
+			if (product == null) {
+				System.out.println("wrong productId"); // debugging
+				return "Wrong productId";
+			}
+			Quota quota = new Quota(quotaId, name, type);
+			quota.setPartner(partner);
+			quota.setProduct(product);
+			this.datastore.save(quota);
+			Query<Product> query = this.datastore.createQuery(Product.class).field("productId").equal(productId);
+			UpdateOperations<Product> op = this.datastore.createUpdateOperations(Product.class).push("quotas",
+					quota);
+			this.datastore.update(query, op);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return "ok";
+	}
 
-  // add product to partner in the table
-  public String addProductToPartner(String partnerId, String name, String productId) {
-    
-    try {
-//            MongoCollection<Document> collection = database.getCollection("Partner");
-//            
-//            collection.updateOne(new Document("_id", partnerId),
-//                new Document("$push", new Document("product", productId)));
-        //haven't decide how to do this one
-		Partner partner = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList().get(0);
-		Product product = new Product(productId, name);
-		this.datastore.save(product);
-    } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            mongoClient.close();
-        }
-    
-    return "ok";
-    
-  }
+	// add a simple user by referencing a product and a partner
+	public String addUser(String id, String productId, String partnerId) {
+		try {
+			List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+			if (partners.size() == 0) {
+				System.out.println("wrong partnerId"); // debugging
+				return "Wrong partnerId";
+			}
+			Partner partner = partners.get(0);
+			Product product = partner.getProduct(productId);
+			if (product == null) {
+				System.out.println("wrong productId"); // debugging
+				return "Wrong productId";
+			}
+			User user = new User(id);
+			user.setPartner(partner);
+			user.setProduct(product);
+			this.datastore.save(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return "ok";
+	}
 
+	// adding product to a specific partner, in mongoDB the product will be
+	// saved by reference and its ID
+	public String addProductToPartner(String partnerId, String name, String productId) {
+		try {
+			Partner partner = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList().get(0);
+			Product product = new Product(productId, name);
+			partner.addProduct(product);
+			this.datastore.save(product);
+			Query<Partner> query = this.datastore.createQuery(Partner.class).field("partnerId").equal(partnerId);
+			UpdateOperations<Partner> op = this.datastore.createUpdateOperations(Partner.class).push("products",
+					product);
+			this.datastore.update(query, op);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return "ok";
+	}
 
-  
+	public String addTier(String partnerId, String productId, String quotaId, String tierId, String name, String max,
+			String price) {
+		try {
+			List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+			if (partners.size() == 0) {
+				System.out.println("wrong partnerId"); // debugging
+				return "Wrong partnerId";
+			}
+			Partner partner = partners.get(0);
+			Product product = partner.getProduct(productId);
+			if (product == null) {
+				System.out.println("wrong productId"); // debugging
+				return "Wrong productId";
+			}
+			Quota quota = product.getQuota(quotaId);
+			if (quota == null) {
+				System.out.println("wrong quotaId");
+				return "Wrong quotaId";
+			}
+			Tier tier = new Tier(quotaId, name, Integer.valueOf(max), Double.valueOf(price));
+			tier.setPartner(partner);
+			tier.setProduct(product);
+			tier.setQuota(quota);
+			this.datastore.save(tier);
+			Query<Quota> query = this.datastore.createQuery(Quota.class).field("quotaId").equal(quotaId);
+			UpdateOperations<Quota> op = this.datastore.createUpdateOperations(Quota.class).push("tiers",
+					tier);
+			this.datastore.update(query, op);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return "ok";
+	}
 }

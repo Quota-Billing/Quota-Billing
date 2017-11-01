@@ -24,10 +24,17 @@ public class User {
 		
 	}
 	
-	public User(String id, Product product, Partner partner){
+	public User(String id){
 		this.id = new ObjectId();
 		this.userId = id;
+		
+	}
+	
+	public void setProduct(final Product product){
 		this.product = product;
+	}
+	
+	public void setPartner(final Partner partner){
 		this.partner = partner;
 	}
 	
@@ -35,11 +42,11 @@ public class User {
 		return this.userId;
 	}
 	
-	public Product getProductId(){
+	public Product getProduct(){
 		return this.product;
 	}
 	
-	public Partner getPartnerId(){
+	public Partner getPartner(){
 		return this.partner;
 	}
 }

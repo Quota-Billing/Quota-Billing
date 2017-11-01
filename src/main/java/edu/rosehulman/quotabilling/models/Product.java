@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
 @Entity("product")
 public class Product {
 	@Id
@@ -16,7 +16,7 @@ public class Product {
 	private String name;
 	@Property
 	private String productId;
-	@Embedded
+	@Reference
 	private List<Quota> quotas = new ArrayList<Quota>();
 	
 
@@ -69,6 +69,15 @@ public class Product {
 			builder.append(q.toString());
 		}
 		return builder.toString();
+	}
+
+	public Quota getQuota(String quotaId) {
+		for(Quota q: this.quotas){
+			if(q.getId().equals(quotaId)){
+				return q;
+			}
+		}
+		return null;
 	}
 
 }
