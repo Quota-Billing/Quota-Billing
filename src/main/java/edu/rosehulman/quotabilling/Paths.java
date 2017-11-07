@@ -9,8 +9,12 @@ public class Paths {
 	public static final String ADD_USER = "partner/:partnerId/product/:productId/user/:userId";
 
 	public static final String BILLING_BASE = "http://srproj-18.csse.rose-hulman.edu:8085/";
+	
+	public static final String QUOTA_BASE = "http://localhost:8080/";
 
 	public static final String ADD_PARTNER = "partner/:partnerId/name/:name/key/:api_key/password/:password";
 	
 	public static final String ADD_Tier = "partner/:partnerId/product/:productId/quota/:quotaId/name/:name/tier/:tierId/price/:price/max/:max";
+	
+	public static final String SET_CONFIG = "setConfig";
 }
