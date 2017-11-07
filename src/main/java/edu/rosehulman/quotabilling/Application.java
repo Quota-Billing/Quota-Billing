@@ -28,6 +28,5 @@ public class Application {
     html += "<br /><br /><button>Upload JSON</button>" + "</form>";
     final String final_html = html;
     get("/upload", (req, res) -> final_html);
-
   }
 }

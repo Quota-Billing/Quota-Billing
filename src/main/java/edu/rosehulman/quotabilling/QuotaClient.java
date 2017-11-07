@@ -18,11 +18,7 @@ public class QuotaClient {
   }
 
   public boolean setConfig(String body) throws Exception {
-    // Send Billing the user
-
     HttpResponse<String> response = Unirest.post(Paths.QUOTA_BASE + Paths.SET_CONFIG).body(body).asString();
-
     return response.getStatus() == 200;
-
   }
 }
