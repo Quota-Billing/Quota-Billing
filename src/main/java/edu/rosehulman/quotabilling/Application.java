@@ -18,5 +18,16 @@ public class Application {
     post(Paths.ADD_PRODUCT_TO_PARTNER, new AddProductController());
     post(Paths.ADD_QUOTA, new AddQuotaController());
     post(Paths.ADD_Tier, new AddTierController());
+    post(Paths.SET_CONFIG, new SetConfigController());
+
+    // TODO: change this to be a html file
+    String html = "<form method='post' action='";
+    html += Paths.SET_CONFIG;
+    html += "' enctype='multipart/form-data'>";
+    html += "<input type='file' name='uploaded_file' accept='.json'>";
+    html += "<br /><br /><button>Upload JSON</button>" + "</form>";
+    final String final_html = html;
+    get("/upload", (req, res) -> final_html);
+
   }
 }
