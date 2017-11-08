@@ -1,8 +1,6 @@
 package edu.rosehulman.quotabilling;
 
 import static spark.Spark.*;
-import static spark.Spark.get;
-import static spark.Spark.staticFiles;
 
 public class Application {
 
@@ -18,5 +16,7 @@ public class Application {
     post(Paths.ADD_PRODUCT_TO_PARTNER, new AddProductController());
     post(Paths.ADD_QUOTA, new AddQuotaController());
     post(Paths.ADD_Tier, new AddTierController());
+    delete(Paths.DELETE_USER, new DeleteUserController());
+
   }
 }
