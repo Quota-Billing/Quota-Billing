@@ -69,7 +69,7 @@ public class Database {
 			quota.setPartner(partner);
 			quota.setProduct(product);
 			this.datastore.save(quota);
-			Query<Product> query = this.datastore.createQuery(Product.class).field("productId").equal(productId);
+			Query<Product> query = this.datastore.createQuery(Product.class).field("id").equal(product.getObjectId());
 			UpdateOperations<Product> op = this.datastore.createUpdateOperations(Product.class).push("quotas",
 					quota);
 			this.datastore.update(query, op);
@@ -148,7 +148,7 @@ public class Database {
 			tier.setProduct(product);
 			tier.setQuota(quota);
 			this.datastore.save(tier);
-			Query<Quota> query = this.datastore.createQuery(Quota.class).field("quotaId").equal(quotaId);
+			Query<Quota> query = this.datastore.createQuery(Quota.class).field("id").equal(quota.getObjectId());
 			UpdateOperations<Quota> op = this.datastore.createUpdateOperations(Quota.class).push("tiers",
 					tier);
 			this.datastore.update(query, op);

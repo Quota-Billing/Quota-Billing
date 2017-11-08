@@ -96,4 +96,9 @@ public class Quota {
 		}
 		return builder.toString();
 	}
+
+	public ObjectId getObjectId() {
+		// TODO Auto-generated method stub
+		return this.id;
+	}
 }
