@@ -15,4 +15,8 @@ public class Paths {
   public static final String ADD_Tier = "partner/:partnerId/product/:productId/quota/:quotaId/name/:name/tier/:tierId/price/:price/max/:max";
 
   public static final String DELETE_USER = "partner/:partnerId/product/:productId/user/:userId";
+
+  public static final String QUOTA_BASE = "http://localhost:8080/";
+
+  public static final String SET_CONFIG = "setConfig";
 }
