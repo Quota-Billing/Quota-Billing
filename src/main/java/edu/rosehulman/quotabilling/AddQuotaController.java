@@ -16,7 +16,7 @@ public class AddQuotaController implements Route {
 		
 		Database.getInstance().addQuota(partnerId, productId, quotaId, name, type);
 		
-		boolean added = BillingClient.getInstance().addQuota();
+		boolean added = BillingClient.getInstance().addQuota(partnerId, productId, quotaId, name, type);
 		if (!added) {
 			throw new Exception();
 		}

@@ -79,4 +79,8 @@ public class Product {
     return null;
   }
 
+	public ObjectId getObjectId() {
+		return this.id;
+	}
+
 }
