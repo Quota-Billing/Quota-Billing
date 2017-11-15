@@ -2,7 +2,6 @@ package edu.rosehulman.quotabilling;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class BillingClient {
 
@@ -73,5 +72,10 @@ public class BillingClient {
 				.asString();
 
 		return response.getStatus() == 200;
+	}
+	
+	public boolean deleteUser(String partnerId, String productId, String userId) {
+		    // to be implemented
+		    return true;
 	}
 }

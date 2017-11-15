@@ -158,4 +158,18 @@ public class Database {
 		}
 		return "ok";
 	}
+	
+	public boolean deleteUser(String partnerId, String productId, String userId) {
+	   final Query<User> deleteQuery = datastore.createQuery(User.class).field("userId").equal(userId);
+	   List<User> results = deleteQuery.asList();
+	
+	   for (User u : results) {
+	     // TODO can/should we ever delete multiple?
+	     if (u.getPartner().getId().equals(partnerId) && u.getProduct().getId().equals(productId)) {
+	       datastore.delete(u);
+	       return true;
+	     }
+	   }
+	   return false;
+	}
 }
