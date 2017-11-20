@@ -28,6 +28,7 @@ public class AddUserController implements Route {
       // Return to Quota a success
     } catch (Exception e) {
       e.printStackTrace();
+      throw e;
     }
     return "";
   }
