@@ -74,8 +74,13 @@ public class BillingClient {
 		return response.getStatus() == 200;
 	}
 
-	public boolean deleteUser(String partnerId, String productId, String userId) {
+	public boolean deleteUser(String partnerId, String productId, String userId) throws Exception {
 		    // to be implemented
-		    return true;
+		HttpResponse<String> response = Unirest
+				.delete(Paths.BILLING_BASE + "partner/{partnerId}/product/{productId}/deleteUser/{userId}")
+				.routeParam("partnerId", partnerId).routeParam("productId", productId).routeParam("userId", userId)
+				.asString();
+
+		return response.getStatus() == 200;
 	}
 }
