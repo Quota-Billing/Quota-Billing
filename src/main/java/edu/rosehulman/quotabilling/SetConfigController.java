@@ -37,6 +37,7 @@ public class SetConfigController implements Route {
     String apiKey = UUID.randomUUID().toString();
 
     Database.getInstance().addPartner(partnerId, partnerName, apiKey, partnerPassword);
+    BillingClient.getInstance().addPartner(partnerId, partnerName, apiKey, partnerPassword);
 
     JsonArray productsJsonArray = partnerJsonObject.getAsJsonArray("products");
     productsJsonArray.iterator().forEachRemaining(productJsonElement -> {
@@ -45,6 +46,13 @@ public class SetConfigController implements Route {
       String productName = productJsonObject.get("name").getAsString();
 
       Database.getInstance().addProductToPartner(partnerId, productName, productId);
+      try {
+		BillingClient.getInstance().addProductToPartner(partnerId, productName, productId);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
 
       JsonArray quotasJsonArray = productJsonObject.getAsJsonArray("quotas");
       quotasJsonArray.iterator().forEachRemaining(quotaJsonElement -> {
@@ -54,7 +62,12 @@ public class SetConfigController implements Route {
         String type = quotaJsonObject.get("type").getAsString();
 
         Database.getInstance().addQuota(partnerId, productId, quotaId, quotaName, type);
-
+        try {
+			BillingClient.getInstance().addQuota(partnerId, productId, quotaId, quotaName, type);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         JsonArray tiersJsonArray = quotaJsonObject.getAsJsonArray("tiers");
         tiersJsonArray.iterator().forEachRemaining(tierJsonElement -> {
           JsonObject tierJsonObject = tierJsonElement.getAsJsonObject();
@@ -64,6 +77,12 @@ public class SetConfigController implements Route {
           String price = tierJsonObject.get("price").getAsString();
 
           Database.getInstance().addTier(partnerId, productId, quotaId, tierId, tierName, max, price);
+          try {
+			BillingClient.getInstance().addTier(partnerId, productId, quotaId, tierId, tierName, max, price);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         });
       });
     });
@@ -77,7 +96,7 @@ public class SetConfigController implements Route {
     
     // TODO: Add to billing's database
 
-    return "Use this API key in your application: " + apiKey;
-  }
+		return "Use this API key in your application: " + apiKey;
+	}
 
 }
