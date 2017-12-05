@@ -37,7 +37,86 @@ public class Database {
 		}
 		return instance;
 	}
+	// getting a partner
+	public Partner getPartner(String partnerId){
+		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+		if (partners.size() == 0) {
+			System.out.println("wrong partnerId"); // debugging
+			return null;
+		}
+		Partner partner = partners.get(0);
+		return partner;
+	}
 	
+	// getting a product with partnerId and productId
+	public Product getProduct(String partnerId, String productId){
+		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+		if (partners.size() == 0) {
+			System.out.println("wrong partnerId"); // debugging
+			return null;
+		}
+		Partner partner = partners.get(0);
+		Product product = partner.getProduct(productId);
+		return product;
+	}
+	
+	// getting a user with partnerId, productId, userId
+	public User getUser(String partnerId, String productId, String userId){
+		List<User> users = datastore.createQuery(User.class).field("partnerId").equal(partnerId).field("productId").equal(productId).field("userId").equal(userId).asList();
+		if (users.size() == 0) {
+			System.out.println("wrong Ids"); // debugging
+			return null;
+		}
+		User user = users.get(0);
+		
+		return user;
+	}
+	
+	// getting a user with partnerId, productId, quotaId
+	public Quota getQuota(String partnerId, String productId, String quotaId){
+		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+		if (partners.size() == 0) {
+			System.out.println("wrong partnerId"); // debugging
+			return null;
+		}
+		Partner partner = partners.get(0);
+		Product product = partner.getProduct(productId);
+		Quota quota = product.getQuota(quotaId);
+		return quota; 
+	}
+	
+	// getting a list of tiers of a quota
+	public List<Tier> getTiers(String partnerId, String productId, String quotaId){
+		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+		if (partners.size() == 0) {
+			System.out.println("wrong partnerId"); // debugging
+			return null;
+		}
+		Partner partner = partners.get(0);
+		Product product = partner.getProduct(productId);
+		Quota quota = product.getQuota(quotaId);
+		return quota.getTiers();
+	}
+	
+	// getting a single tier from a quota, given the tierId
+	public Tier getTier(String partnerId, String productId, String quotaId, String TierId){
+		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+		if (partners.size() == 0) {
+			System.out.println("wrong partnerId"); // debugging
+			return null;
+		}
+		Partner partner = partners.get(0);
+		Product product = partner.getProduct(productId);
+		Quota quota = product.getQuota(quotaId);
+		List<Tier> tiers =  quota.getTiers();
+		for(Tier t: tiers){
+			if(t.getId() == TierId){
+				return t;
+			}
+		}
+		return null;
+	}
+
 
 	// add a partner
 	public String addPartner(String partnerId, String name, String apiKey, String password) {
