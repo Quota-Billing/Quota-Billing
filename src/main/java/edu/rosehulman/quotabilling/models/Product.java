@@ -9,76 +9,90 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import edu.rosehulman.quotabilling.ObjectIdSerializer;
+
 @Entity("product")
 public class Product {
-  @Id
-  private ObjectId id;
-  @Property
-  private String name;
-  @Property
-  private String productId;
-  @Reference
-  private List<Quota> quotas = new ArrayList<Quota>();
+	@Id
+	@JsonSerialize(using = ObjectIdSerializer.class)
+	private ObjectId id;
+	@Property
+	@JsonProperty("name")
+	private String name;
+	@Property
+	@JsonProperty("productId")
+	private String productId;
+	@Reference
+	@JsonProperty("quotas")
+	private List<Quota> quotas = new ArrayList<Quota>();
 
-  public Product() {
+	public Product() {
 
-  }
+	}
 
-  public Product(String productId, String name) {
-    this.id = new ObjectId();
-    this.productId = productId;
-    this.name = name;
-  }
+	public Product(String productId, String name) {
+		this.id = new ObjectId();
+		this.productId = productId;
+		this.name = name;
+	}
 
-  public void setId(String id) {
-    this.productId = id;
-  }
+	public void setId(String id) {
+		this.productId = id;
+	}
+	@JsonIgnore
+	public String getId() {
+		return this.productId;
+	}
 
-  public String getId() {
-    return this.productId;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@JsonIgnore
+	public String getName() {
+		return this.name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	@JsonIgnore
+	public List<Quota> getQuotas() {
+		return quotas;
+	}
 
-  public String getName() {
-    return this.name;
-  }
+	public void removeQuota(Quota q) {
+		this.quotas.remove(q);
+	}
 
-  public List<Quota> getQuotas() {
-    return quotas;
-  }
+	public void addQuota(Quota quota) {
+		this.quotas.add(quota);
+	}
 
-  public void removeQuota(Quota q) {
-    this.quotas.remove(q);
-  }
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Product: " + this.productId + "\n");
+		builder.append("Name: " + name + "\n");
+		builder.append("Quotas: ");
+		for (Quota q : this.quotas) {
+			builder.append(q.toString());
+		}
+		return builder.toString();
+	}
 
-  public void addQuota(Quota quota) {
-    this.quotas.add(quota);
-  }
+	@JsonIgnore
+	public Quota getQuota(String quotaId) {
+		for (Quota q : this.quotas) {
+			if (q.getId().equals(quotaId)) {
+				return q;
+			}
+		}
+		return null;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("Product: " + this.productId + "\n");
-    builder.append("Name: " + name + "\n");
-    builder.append("Quotas: ");
-    for (Quota q : this.quotas) {
-      builder.append(q.toString());
-    }
-    return builder.toString();
-  }
-
-  public Quota getQuota(String quotaId) {
-    for (Quota q : this.quotas) {
-      if (q.getId().equals(quotaId)) {
-        return q;
-      }
-    }
-    return null;
-  }
-
+	@JsonIgnore
 	public ObjectId getObjectId() {
 		return this.id;
 	}

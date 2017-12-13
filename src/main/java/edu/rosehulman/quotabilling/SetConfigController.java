@@ -37,7 +37,7 @@ public class SetConfigController implements Route {
     String apiKey = UUID.randomUUID().toString();
 
     Database.getInstance().addPartner(partnerId, partnerName, apiKey, partnerPassword);
-    BillingClient.getInstance().addPartner(partnerId, partnerName, apiKey, partnerPassword);
+    BillingClient.getInstance().addPartner(partnerId);
 
     JsonArray productsJsonArray = partnerJsonObject.getAsJsonArray("products");
     productsJsonArray.iterator().forEachRemaining(productJsonElement -> {
@@ -47,7 +47,7 @@ public class SetConfigController implements Route {
 
       Database.getInstance().addProductToPartner(partnerId, productName, productId);
       try {
-		BillingClient.getInstance().addProductToPartner(partnerId, productName, productId);
+		BillingClient.getInstance().addProductToPartner(partnerId, productId);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -63,7 +63,7 @@ public class SetConfigController implements Route {
 
         Database.getInstance().addQuota(partnerId, productId, quotaId, quotaName, type);
         try {
-			BillingClient.getInstance().addQuota(partnerId, productId, quotaId, quotaName, type);
+			BillingClient.getInstance().addQuota(partnerId, productId, quotaId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,7 +78,7 @@ public class SetConfigController implements Route {
 
           Database.getInstance().addTier(partnerId, productId, quotaId, tierId, tierName, max, price);
           try {
-			BillingClient.getInstance().addTier(partnerId, productId, quotaId, tierId, tierName, max, price);
+			BillingClient.getInstance().addTier(partnerId, productId, quotaId, tierId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

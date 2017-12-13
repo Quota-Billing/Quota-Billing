@@ -2,11 +2,15 @@ package edu.rosehulman.quotabilling;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
@@ -38,18 +42,25 @@ public class Database {
 		return instance;
 	}
 	// getting a partner
-	public Partner getPartner(String partnerId){
+	public String getPartner(String partnerId){
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
 		if (partners.size() == 0) {
 			System.out.println("wrong partnerId"); // debugging
 			return null;
 		}
 		Partner partner = partners.get(0);
-		return partner;
+		ObjectMapper mapper = new ObjectIdMapper();    
+		try {
+			System.out.println("returning: "+ mapper.writeValueAsString(partner));
+			return mapper.writeValueAsString(partner);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	// getting a product with partnerId and productId
-	public Product getProduct(String partnerId, String productId){
+	public String getProduct(String partnerId, String productId){;
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
 		if (partners.size() == 0) {
 			System.out.println("wrong partnerId"); // debugging
@@ -57,7 +68,14 @@ public class Database {
 		}
 		Partner partner = partners.get(0);
 		Product product = partner.getProduct(productId);
-		return product;
+		ObjectMapper mapper = new ObjectIdMapper();    
+		try {
+			System.out.println("returning: "+ mapper.writeValueAsString(product));
+			return mapper.writeValueAsString(product);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	// getting a user with partnerId, productId, userId
@@ -73,7 +91,7 @@ public class Database {
 	}
 	
 	// getting a user with partnerId, productId, quotaId
-	public Quota getQuota(String partnerId, String productId, String quotaId){
+	public String getQuota(String partnerId, String productId, String quotaId){
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
 		if (partners.size() == 0) {
 			System.out.println("wrong partnerId"); // debugging
@@ -82,7 +100,14 @@ public class Database {
 		Partner partner = partners.get(0);
 		Product product = partner.getProduct(productId);
 		Quota quota = product.getQuota(quotaId);
-		return quota; 
+		ObjectMapper mapper = new ObjectIdMapper();    
+		try {
+			System.out.println("returning: "+ mapper.writeValueAsString(quota));
+			return mapper.writeValueAsString(quota);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	// getting a list of tiers of a quota
@@ -92,6 +117,7 @@ public class Database {
 			System.out.println("wrong partnerId"); // debugging
 			return null;
 		}
+		
 		Partner partner = partners.get(0);
 		Product product = partner.getProduct(productId);
 		Quota quota = product.getQuota(quotaId);
@@ -99,7 +125,7 @@ public class Database {
 	}
 	
 	// getting a single tier from a quota, given the tierId
-	public Tier getTier(String partnerId, String productId, String quotaId, String TierId){
+	public String getTier(String partnerId, String productId, String quotaId, String TierId){
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
 		if (partners.size() == 0) {
 			System.out.println("wrong partnerId"); // debugging
@@ -110,8 +136,15 @@ public class Database {
 		Quota quota = product.getQuota(quotaId);
 		List<Tier> tiers =  quota.getTiers();
 		for(Tier t: tiers){
-			if(t.getId() == TierId){
-				return t;
+			if(t.getId().equals(TierId)){
+				ObjectMapper mapper = new ObjectIdMapper();    
+				try {
+					System.out.println("returning: "+ mapper.writeValueAsString(t));
+					return mapper.writeValueAsString(t);
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				}
+				return null;
 			}
 		}
 		return null;
@@ -188,7 +221,17 @@ public class Database {
 	// saved by reference and its ID
 	public String addProductToPartner(String partnerId, String name, String productId) {
 		try {
-			Partner partner = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList().get(0);
+			System.out.println(partnerId);
+			System.out.println(name);
+			System.out.println(productId);
+			List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+			if (partners.size() == 0) {
+				System.out.println("wrong partnerId"); // debugging
+				return "Wrong partnerId";
+			}
+			System.out.println(partners.size());
+			Partner partner = partners.get(0);
+			System.out.println(partner.getId());
 			Product product = new Product(productId, name);
 			partner.addProduct(product);
 			this.datastore.save(product);

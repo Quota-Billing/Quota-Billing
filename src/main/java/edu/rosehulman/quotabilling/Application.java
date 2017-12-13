@@ -1,6 +1,10 @@
 package edu.rosehulman.quotabilling;
 
-import static spark.Spark.*;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.Spark.post;
+import static spark.Spark.staticFiles;
 
 public class Application {
 
@@ -10,7 +14,7 @@ public class Application {
     staticFiles.location("/public");
 
     get("/test", (req, res) -> "hello");
-
+ 
     post(Paths.ADD_USER, new AddUserController());
     post(Paths.ADD_PARTNER, new AddPartnerController());
     post(Paths.ADD_PRODUCT_TO_PARTNER, new AddProductController());
@@ -18,7 +22,10 @@ public class Application {
     post(Paths.ADD_Tier, new AddTierController());
     delete(Paths.DELETE_USER, new DeleteUserController());
     post(Paths.SET_CONFIG, new SetConfigController());
-
+    get(Paths.GET_QUOTA, new GetQuotaController());
+    get(Paths.GET_PARTNER, new GetPartnerController());
+    get(Paths.GET_PRODUCT, new GetProductController());
+    get(Paths.GET_TIER, new GetTierController());
     // TODO: change this to be a html file
     String html = "<form method='post' action='";
     html += Paths.SET_CONFIG;

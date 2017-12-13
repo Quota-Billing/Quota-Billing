@@ -15,8 +15,7 @@ public class AddPartnerController implements Route {
 		
 		Database.getInstance().addPartner(partnerId, name, key, password);
 		
-		boolean added = BillingClient.getInstance().addPartner(partnerId, name, key, password);
-		System.out.println("here");
+		boolean added = BillingClient.getInstance().addPartner(partnerId);
 		if (!added) {
 			throw new Exception();
 		}

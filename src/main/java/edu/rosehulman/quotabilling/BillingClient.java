@@ -29,46 +29,45 @@ public class BillingClient {
 
 	}
 
-	public boolean addPartner(String partnerId, String name, String apiKey, String password) throws Exception {
+	public boolean addPartner(String partnerId) throws Exception {
 		// to be implemented
 		HttpResponse<String> response = Unirest
 				.post(Paths.BILLING_BASE
-						+ "partner/{partnerId}/name/{name}/key/{apiKey}/password/{password}")
-				.routeParam("partnerId", partnerId).routeParam("name", name).routeParam("apiKey", apiKey)
-				.routeParam("password", password).asString();
-
-		return response.getStatus() == 200;
-	}
-
-	public boolean addProductToPartner(String partnerId, String name, String productId) throws Exception {
-		// to be implemented
-		HttpResponse<String> response = Unirest
-				.post(Paths.BILLING_BASE + "partner/{partnerId}/name/{name}/product/{productId}")
-				.routeParam("partnerId", partnerId).routeParam("name", name).routeParam("productId", productId)
+						+ "partner/{partnerId}")
+				.routeParam("partnerId", partnerId)
 				.asString();
 
 		return response.getStatus() == 200;
 	}
 
-	public boolean addQuota(String partnerId, String productId, String quotaId, String name, String type)
-			throws Exception {
+	public boolean addProductToPartner(String partnerId, String productId) throws Exception {
 		// to be implemented
 		HttpResponse<String> response = Unirest
-				.post(Paths.BILLING_BASE +
-								"partner/{partnerId}/product/{productId}/quota/{quotaId}/name/{name}/type/{type}")
-				.routeParam("partnerId", partnerId).routeParam("productId", productId).routeParam("quotaId", quotaId).routeParam("name", name)
-				.routeParam("type", type).asString();
+				.post(Paths.BILLING_BASE + "partner/{partnerId}/product/{productId}")
+				.routeParam("partnerId", partnerId).routeParam("productId", productId)
+				.asString();
 
 		return response.getStatus() == 200;
 	}
 
-	public boolean addTier(String partnerId, String productId, String quotaId, String tierId, String name, String max,
-			String price) throws Exception {
+	public boolean addQuota(String partnerId, String productId, String quotaId)
+			throws Exception {
+		// to be implemented
+		HttpResponse<String> response = Unirest
+				.post(Paths.BILLING_BASE +
+								"partner/{partnerId}/product/{productId}/quota/{quotaId}")
+				.routeParam("partnerId", partnerId).routeParam("productId", productId).routeParam("quotaId", quotaId)
+				.asString();
+
+		return response.getStatus() == 200;
+	}
+
+	public boolean addTier(String partnerId, String productId, String quotaId, String tierId) throws Exception {
 		// to be implemented
 		HttpResponse<String> response = Unirest.post(Paths.BILLING_BASE +
-						"partner/{partnerId}/product/{productId}/quota/{quotaId}/name/{name}/tier/{tierId}/price/{price}/max/{max}")
+						"partner/{partnerId}/product/{productId}/quota/{quotaId}/tier/{tierId}")
 				.routeParam("partnerId", partnerId).routeParam("productId", productId).routeParam("quotaId", quotaId)
-				.routeParam("tierId", tierId).routeParam("name", name).routeParam("max", max).routeParam("price", price)
+				.routeParam("tierId", tierId)
 				.asString();
 
 		return response.getStatus() == 200;

@@ -8,7 +8,8 @@ public class Paths {
 
   public static final String ADD_USER = "partner/:partnerId/product/:productId/user/:userId";
 
-  public static final String BILLING_BASE = "http://srproj-18.csse.rose-hulman.edu:8085/";
+  //public static final String BILLING_BASE = "http://srproj-18.csse.rose-hulman.edu:8085/";
+  public static final String BILLING_BASE = "http://localhost:8085/";
 
   public static final String ADD_PARTNER = "partner/:partnerId/name/:name/key/:api_key/password/:password";
 
@@ -19,4 +20,14 @@ public class Paths {
   public static final String QUOTA_BASE = "http://localhost:8080/";
 
   public static final String SET_CONFIG = "setConfig";
+  
+  public static final String GET_USER = "partner/:partnerId/product/:productId/user/:userId";
+  
+  public static final String GET_PARTNER = "partner/:partnerId";
+
+  public static final String GET_PRODUCT = "partner/:partnerId/product/:productId";
+  
+  public static final String GET_QUOTA = "partner/:partnerId/product/:productId/quota/:quotaId";
+  
+  public static final String GET_TIER = "partner/:partnerId/product/:productId/quota/:quotaId/tier/:tierId";
 }

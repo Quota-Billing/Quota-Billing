@@ -14,7 +14,7 @@ public class AddProductController implements Route {
 		
 		Database.getInstance().addProductToPartner(partnerId, name, productId);
 		
-		boolean added = BillingClient.getInstance().addProductToPartner(partnerId, name, productId);
+		boolean added = BillingClient.getInstance().addProductToPartner(partnerId, productId);
 		System.out.println("here");
 		if (!added) {
 			throw new Exception();

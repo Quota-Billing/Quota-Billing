@@ -17,7 +17,7 @@ public class AddTierController implements Route {
 		String max = request.params("max");
 		
 		Database.getInstance().addTier(partnerId, productId, quotaId, tierId, name, max, price);
-		boolean added = BillingClient.getInstance().addTier(partnerId, productId, quotaId, tierId, name, max, price);
+		boolean added = BillingClient.getInstance().addTier(partnerId, productId, quotaId, tierId);
 		if (!added) {
 			throw new Exception();
 		}
