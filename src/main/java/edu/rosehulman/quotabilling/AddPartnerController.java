@@ -12,8 +12,9 @@ public class AddPartnerController implements Route {
 		String name = request.params(":name");
 		String key = request.params(":api_key");
 		String password = request.params(":password");
-		
-		Database.getInstance().addPartner(partnerId, name, key, password);
+
+		// TODO
+		// Database.getInstance().addPartner(partnerId, name, key, password);
 		
 		boolean added = BillingClient.getInstance().addPartner(partnerId);
 		if (!added) {

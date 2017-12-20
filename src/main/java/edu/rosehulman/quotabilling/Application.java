@@ -1,10 +1,11 @@
 package edu.rosehulman.quotabilling;
 
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.port;
-import static spark.Spark.post;
-import static spark.Spark.staticFiles;
+import edu.rosehulman.quotabilling.models.Partner;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import static spark.Spark.*;
 
 public class Application {
 
@@ -14,7 +15,7 @@ public class Application {
     staticFiles.location("/public");
 
     get("/test", (req, res) -> "hello");
- 
+
     post(Paths.ADD_USER, new AddUserController());
     post(Paths.ADD_PARTNER, new AddPartnerController());
     post(Paths.ADD_PRODUCT_TO_PARTNER, new AddProductController());
@@ -26,13 +27,27 @@ public class Application {
     get(Paths.GET_PARTNER, new GetPartnerController());
     get(Paths.GET_PRODUCT, new GetProductController());
     get(Paths.GET_TIER, new GetTierController());
-    // TODO: change this to be a html file
-    String html = "<form method='post' action='";
-    html += Paths.SET_CONFIG;
-    html += "' enctype='multipart/form-data'>";
-    html += "<input type='file' name='uploaded_file' accept='.json'>";
-    html += "<br /><br /><button>Upload JSON</button>" + "</form>";
-    final String final_html = html;
-    get("/upload", (req, res) -> final_html);
+
+    post("/signUp", new SignUpController()); // TODO add to Paths class
+    post("/logIn", new LogInController());
+    get("/logout", (request, response) -> {
+      Optional<Partner> partnerOptional = Database.getInstance().getPartnerBySession(request.session().attribute("value"));
+      if (!partnerOptional.isPresent()) {
+        throw halt(403);
+      }
+      Partner partner = partnerOptional.get();
+      Database.getInstance().updatePartnerSession(partner, UUID.randomUUID());
+      response.redirect("/");
+      return "";
+    });
+    get("/dashboard", (request, response) -> {
+      Optional<Partner> partnerOptional = Database.getInstance().getPartnerBySession(request.session().attribute("value"));
+      if (!partnerOptional.isPresent()) {
+        throw halt(403);
+      }
+      Partner partner = partnerOptional.get();
+      return "Welcome " + partner.getName() + "<br/><a href='/logout'>Logout</a><br/><br/>" +
+              "<div><form method=\"post\" action=\"setConfig\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"uploaded_file\" accept=\".json\"><br/><br/><button>Upload JSON</button></form></div>";
+    });
   }
 }

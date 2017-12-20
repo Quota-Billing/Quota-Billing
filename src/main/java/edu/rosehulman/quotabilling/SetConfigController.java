@@ -1,20 +1,17 @@
 package edu.rosehulman.quotabilling;
 
-import java.io.InputStream;
-import java.util.UUID;
-
-import javax.servlet.MultipartConfigElement;
-
-import org.apache.http.HttpException;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
+import org.apache.http.HttpException;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.utils.IOUtils;
+
+import javax.servlet.MultipartConfigElement;
+import java.io.InputStream;
+import java.util.UUID;
 
 public class SetConfigController implements Route {
 
@@ -36,7 +33,8 @@ public class SetConfigController implements Route {
     String partnerId = UUID.randomUUID().toString();
     String apiKey = UUID.randomUUID().toString();
 
-    Database.getInstance().addPartner(partnerId, partnerName, apiKey, partnerPassword);
+    // TODO
+    //Database.getInstance().addPartner(partnerId, partnerName, apiKey, partnerPassword);
     BillingClient.getInstance().addPartner(partnerId);
 
     JsonArray productsJsonArray = partnerJsonObject.getAsJsonArray("products");
