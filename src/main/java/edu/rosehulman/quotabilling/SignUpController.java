@@ -25,6 +25,10 @@ public class SignUpController implements Route {
     request.session().attribute("value", sessionValue.toString());
     Database.getInstance().updatePartnerSession(partner, sessionValue);
 
+    QuotaClient.getInstance().addPartner(partner); // TODO Check this boolean
+
+    // TODO tell billing partner was added
+
     return "";
   }
 }

@@ -46,7 +46,7 @@ public class Application {
         throw halt(403);
       }
       Partner partner = partnerOptional.get();
-      return "Welcome " + partner.getName() + "<br/><a href='/logout'>Logout</a><br/><br/>" +
+      return "Welcome, " + partner.getName() + "<br/>Api key: " + partner.getApikey() + "<br/><br/><a href='/logout'>Logout</a><br/><br/>" +
               "<div><form method=\"post\" action=\"setConfig\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"uploaded_file\" accept=\".json\"><br/><br/><button>Upload JSON</button></form></div>";
     });
   }

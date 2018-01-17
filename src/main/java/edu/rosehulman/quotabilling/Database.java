@@ -69,6 +69,15 @@ public class Database {
     return Optional.of(partner);
 	}
 
+	public Optional<Partner> getPartnerById(String partnerId) throws Exception {
+		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+
+		if (partners.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(partners.get(0));
+	}
+
 	public Partner createPartner(String name, String password) throws Exception {
     Partner partner = new Partner();
     partner.setApikey(UUID.randomUUID().toString());

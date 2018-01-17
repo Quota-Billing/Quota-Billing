@@ -90,7 +90,6 @@ public class Partner {
 		this.partnerId = id;
 	}
 
-	@JsonIgnore
 	public String getId() {
 		return this.partnerId;
 	}
