@@ -40,16 +40,7 @@ public class Partner {
 	private String sessionValue;
 
 	public Partner() {
-
 	}
-
-//	public Partner(String partnerId, String name, String apikey) {
-//		this.id = new ObjectId();
-//		this.partnerId = partnerId;
-//		this.name = name;
-//		this.apikey = apikey;
-//		this.products = new ArrayList<Product>();
-//	}
 
 	@JsonIgnore
 	public ObjectId getObjectId() {
