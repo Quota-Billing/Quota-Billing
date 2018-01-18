@@ -24,7 +24,7 @@ public class QuotaClient {
   }
 
   public boolean addPartner(Partner partner) throws Exception {
-    HttpResponse<String> response = Unirest.post(Paths.QUOTA_BASE + "partner").body("{\"partnerId\":\""+partner.getId()+"\",\"apiKey\":\""+partner.getApikey()+"\"}").asString();
+    HttpResponse<String> response = Unirest.post(Paths.QUOTA_BASE + "partner").body("{\"partnerId\":\"" + partner.getId() + "\",\"apiKey\":\"" + partner.getApikey() + "\"}").asString();
     return response.getStatus() == 200;
   }
 }

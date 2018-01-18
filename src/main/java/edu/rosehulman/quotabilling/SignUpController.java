@@ -27,7 +27,10 @@ public class SignUpController implements Route {
 
     QuotaClient.getInstance().addPartner(partner); // TODO Check this boolean
 
-    // TODO tell billing partner was added
+    boolean added = BillingClient.getInstance().addPartner(partner.getId());
+    if (!added) {
+      throw new Exception();
+    }
 
     return "";
   }

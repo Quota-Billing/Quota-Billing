@@ -36,17 +36,6 @@ public class SetConfigController implements Route {
 
     JsonObject partnerJsonObject = new JsonParser().parse(body).getAsJsonObject();
 
-    //String partnerName = partnerJsonObject.get("name").getAsString();
-    //String partnerPassword = partnerJsonObject.get("password").getAsString();
-
-    // TODO: Generate partnerId and apiKey earlier during sign up process?
-    //String partnerId = UUID.randomUUID().toString();
-    //String apiKey = UUID.randomUUID().toString();
-
-    // TODO
-    //Database.getInstance().addPartner(partnerId, partnerName, apiKey, partnerPassword);
-    //BillingClient.getInstance().addPartner(partnerId);
-
     JsonArray productsJsonArray = partnerJsonObject.getAsJsonArray("products");
     productsJsonArray.iterator().forEachRemaining(productJsonElement -> {
       JsonObject productJsonObject = productJsonElement.getAsJsonObject();
@@ -55,12 +44,11 @@ public class SetConfigController implements Route {
 
       Database.getInstance().addProductToPartner(partner.getId(), productName, productId);
       try {
-		BillingClient.getInstance().addProductToPartner(partner.getId(), productId);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-
+        BillingClient.getInstance().addProductToPartner(partner.getId(), productId);
+      } catch (Exception e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
 
       JsonArray quotasJsonArray = productJsonObject.getAsJsonArray("quotas");
       quotasJsonArray.iterator().forEachRemaining(quotaJsonElement -> {
@@ -71,11 +59,11 @@ public class SetConfigController implements Route {
 
         Database.getInstance().addQuota(partner.getId(), productId, quotaId, quotaName, type);
         try {
-			BillingClient.getInstance().addQuota(partner.getId(), productId, quotaId);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+          BillingClient.getInstance().addQuota(partner.getId(), productId, quotaId);
+        } catch (Exception e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
         JsonArray tiersJsonArray = quotaJsonObject.getAsJsonArray("tiers");
         tiersJsonArray.iterator().forEachRemaining(tierJsonElement -> {
           JsonObject tierJsonObject = tierJsonElement.getAsJsonObject();
@@ -86,28 +74,21 @@ public class SetConfigController implements Route {
 
           Database.getInstance().addTier(partner.getId(), productId, quotaId, tierId, tierName, max, price);
           try {
-			BillingClient.getInstance().addTier(partner.getId(), productId, quotaId, tierId);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            BillingClient.getInstance().addTier(partner.getId(), productId, quotaId, tierId);
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
         });
       });
     });
-
-    //partnerJsonObject.addProperty("apiKey", apiKey);
-    //partnerJsonObject.addProperty("partnerId", partnerId);
 
     ObjectMapper mapper = new ObjectMapper();
     Partner tempPartner = Database.getInstance().getPartnerById(partner.getId()).get();
     if (!QuotaClient.getInstance().setConfig(mapper.writeValueAsString(tempPartner))) {
       throw new HttpException("Setting config to quota server failed");
     }
-    
-    // TODO: Add to billing's database
 
-		//return "Use this API key in your application: " + apiKey;
-    return "Config Uploaded! <a href='./dashboard'>Continue...</a>";
-	}
-
+    return "Config Uploaded! <a href='" + Paths.DASHBOARD + "'>Continue...</a>";
+  }
 }
