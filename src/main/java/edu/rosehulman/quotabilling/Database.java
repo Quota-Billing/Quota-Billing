@@ -193,20 +193,6 @@ public class Database {
 		return null;
 	}
 
-	// TODO
-	// add a partner
-//	public String addPartner(String partnerId, String name, String apiKey, String passwordHash) {
-//		try {
-//			Partner partner = new Partner(partnerId, name, apiKey);
-//			partner.setPasswordHash(passwordHash);
-//			this.datastore.save(partner);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		} finally {
-//		}
-//		return "ok";
-//	}
-
 	public String addQuota(String partnerId, String productId, String quotaId, String name, String type) {
 		try {
 			List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
