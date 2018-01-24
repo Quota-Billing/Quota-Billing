@@ -1,10 +1,6 @@
 package edu.rosehulman.quotabilling;
 
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.port;
-import static spark.Spark.post;
-import static spark.Spark.staticFiles;
+import static spark.Spark.*;
 
 public class Application {
 
@@ -14,9 +10,8 @@ public class Application {
     staticFiles.location("/public");
 
     get("/test", (req, res) -> "hello");
- 
+
     post(Paths.ADD_USER, new AddUserController());
-    post(Paths.ADD_PARTNER, new AddPartnerController());
     post(Paths.ADD_PRODUCT_TO_PARTNER, new AddProductController());
     post(Paths.ADD_QUOTA, new AddQuotaController());
     post(Paths.ADD_Tier, new AddTierController());
@@ -26,13 +21,10 @@ public class Application {
     get(Paths.GET_PARTNER, new GetPartnerController());
     get(Paths.GET_PRODUCT, new GetProductController());
     get(Paths.GET_TIER, new GetTierController());
-    // TODO: change this to be a html file
-    String html = "<form method='post' action='";
-    html += Paths.SET_CONFIG;
-    html += "' enctype='multipart/form-data'>";
-    html += "<input type='file' name='uploaded_file' accept='.json'>";
-    html += "<br /><br /><button>Upload JSON</button>" + "</form>";
-    final String final_html = html;
-    get("/upload", (req, res) -> final_html);
+
+    post(Paths.SIGN_UP, new SignUpController());
+    post(Paths.LOG_IN, new LogInController());
+    get(Paths.LOG_OUT, new LogoutController());
+    get(Paths.DASHBOARD, new DashboardController());
   }
 }

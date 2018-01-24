@@ -32,6 +32,9 @@ public class Tier {
 	@Property
 	@JsonProperty("price")
 	private double price;
+	@Property
+	@JsonProperty("graceExtra")
+	private int graceExtra;
 	@Reference
 	@JsonIgnore
 	private Partner partner;
@@ -109,6 +112,15 @@ public class Tier {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	@JsonIgnore
+	public int getGraceExtra() {
+		return graceExtra;
+	}
+
+	public void setGraceExtra(int graceExtra) {
+		this.graceExtra = graceExtra;
 	}
 
 	@Override

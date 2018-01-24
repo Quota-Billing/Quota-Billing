@@ -26,7 +26,6 @@ public class BillingClient {
 				.asString();
 
 		return response.getStatus() == 200;
-
 	}
 
 	public boolean addPartner(String partnerId) throws Exception {

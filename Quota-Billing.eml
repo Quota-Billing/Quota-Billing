@@ -23,6 +23,16 @@
 		<level name="Maven: org.eclipse.jetty:jetty-client:9.4.4.v20170414" value="project"/>
 		<level name="Maven: org.eclipse.jetty.websocket:websocket-servlet:9.4.4.v20170414" value="project"/>
 		<level name="Maven: org.eclipse.jetty.websocket:websocket-api:9.4.4.v20170414" value="project"/>
+		<level name="Maven: org.mongojack:mongojack:2.8.0" value="project"/>
+		<level name="Maven: org.mongodb:mongodb-driver:3.5.0" value="project"/>
+		<level name="Maven: org.mongodb:bson:3.5.0" value="project"/>
+		<level name="Maven: org.mongodb:mongodb-driver-core:3.5.0" value="project"/>
+		<level name="Maven: de.undercouch:bson4jackson:2.7.0" value="project"/>
+		<level name="Maven: javax.persistence:persistence-api:1.0.2" value="project"/>
+		<level name="Maven: commons-io:commons-io:2.5" value="project"/>
+		<level name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.2" value="project"/>
+		<level name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" value="project"/>
+		<level name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.2" value="project"/>
 		<level name="Maven: org.mongodb:mongo-java-driver:3.5.0" value="project"/>
 		<level name="Maven: com.mashape.unirest:unirest-java:1.4.9" value="project"/>
 		<level name="Maven: org.apache.httpcomponents:httpclient:4.5.2" value="project"/>

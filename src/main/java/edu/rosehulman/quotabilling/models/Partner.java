@@ -1,19 +1,16 @@
 package edu.rosehulman.quotabilling.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import edu.rosehulman.quotabilling.ObjectIdSerializer;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import edu.rosehulman.quotabilling.ObjectIdSerializer;
+import java.util.List;
 
 @Entity("partner")
 public class Partner {
@@ -33,20 +30,18 @@ public class Partner {
 	@JsonProperty("apikey")
 	private String apikey;
 	@Property
-	@JsonProperty("password")
-	private String password;
+	@JsonProperty("passwordHash")
+	private String passwordHash;
+	@Property
+	@JsonProperty("passwordSalt")
+	private String passwordSalt;
+	@Property
+	@JsonProperty("sessionValue")
+	private String sessionValue;
 
 	public Partner() {
-
 	}
 
-	public Partner(String partnerId, String name, String apikey) {
-		this.id = new ObjectId();
-		this.partnerId = partnerId;
-		this.name = name;
-		this.apikey = apikey;
-		this.products = new ArrayList<Product>();
-	}
 	@JsonIgnore
 	public ObjectId getObjectId() {
 		if (id == null) {
@@ -58,6 +53,7 @@ public class Partner {
 	public void addProduct(Product product) {
 		this.products.add(product);
 	}
+
 	@JsonIgnore
 	public Product getProduct(String productId) {
 		for (Product p : this.products) {
@@ -67,9 +63,14 @@ public class Partner {
 		}
 		return null;
 	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
 	@JsonIgnore
-	public List<Product> getAllProducts() {
-		return this.products;
+	public List<Product> getProducts() {
+		return products;
 	}
 
 	public void removeProduct(Product product) {
@@ -80,7 +81,6 @@ public class Partner {
 		this.partnerId = id;
 	}
 
-	@JsonIgnore
 	public String getId() {
 		return this.partnerId;
 	}
@@ -93,8 +93,40 @@ public class Partner {
 		return this.name;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	@JsonIgnore
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	@JsonIgnore
+	public String getPasswordSalt() {
+		return passwordSalt;
+	}
+
+	public void setPasswordSalt(String passwordSalt) {
+		this.passwordSalt = passwordSalt;
+	}
+
+	@JsonIgnore
+	public String getApikey() {
+		return apikey;
+	}
+
+	public void setApikey(String apikey) {
+		this.apikey = apikey;
+	}
+
+	@JsonIgnore
+	public String getSessionValue() {
+		return sessionValue;
+	}
+
+	public void setSessionValue(String sessionValue) {
+		this.sessionValue = sessionValue;
 	}
 
 	@Override

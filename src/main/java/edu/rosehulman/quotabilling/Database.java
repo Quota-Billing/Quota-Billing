@@ -1,24 +1,18 @@
 package edu.rosehulman.quotabilling;
 
-import java.util.List;
-
-import org.bson.types.ObjectId;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import edu.rosehulman.quotabilling.models.*;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-
-import edu.rosehulman.quotabilling.models.Partner;
-import edu.rosehulman.quotabilling.models.Product;
-import edu.rosehulman.quotabilling.models.Quota;
-import edu.rosehulman.quotabilling.models.Tier;
-import edu.rosehulman.quotabilling.models.User;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Database {
 
@@ -42,14 +36,14 @@ public class Database {
 		return instance;
 	}
 	// getting a partner
-	public String getPartner(String partnerId){
+	public String getPartner(String partnerId) {
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
 		if (partners.size() == 0) {
 			System.out.println("wrong partnerId"); // debugging
 			return null;
 		}
 		Partner partner = partners.get(0);
-		ObjectMapper mapper = new ObjectIdMapper();    
+		ObjectMapper mapper = new ObjectIdMapper();
 		try {
 			System.out.println("returning: "+ mapper.writeValueAsString(partner));
 			return mapper.writeValueAsString(partner);
@@ -58,9 +52,58 @@ public class Database {
 		}
 		return null;
 	}
-	
+
+	public boolean partnerExists(String name) {
+		return !datastore.createQuery(Partner.class).field("name").equal(name).asList().isEmpty();
+	}
+
+	public Optional<Partner> getPartner(String name, String password) throws Exception {
+		if (!partnerExists(name)) {
+			return Optional.empty();
+		}
+    Partner partner = datastore.createQuery(Partner.class).field("name").equal(name).asList().get(0);
+		String hash = Hasher.hash(password, partner.getPasswordSalt());
+		if (!hash.equals(partner.getPasswordHash())) {
+      return Optional.empty();
+    }
+    return Optional.of(partner);
+	}
+
+	public Optional<Partner> getPartnerById(String partnerId) throws Exception {
+		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
+
+		if (partners.isEmpty()) {
+			return Optional.empty();
+		}
+		return Optional.of(partners.get(0));
+	}
+
+	public Partner createPartner(String name, String password) throws Exception {
+    Partner partner = new Partner();
+    partner.setApikey(UUID.randomUUID().toString());
+    partner.setPartnerId(UUID.randomUUID().toString());
+    partner.setName(name);
+    partner.setPasswordSalt(Hasher.getRandomSalt());
+    partner.setPasswordHash(Hasher.hash(password, partner.getPasswordSalt()));
+    this.datastore.save(partner);
+    return partner;
+  }
+
+  public void updatePartnerSession(Partner partner, UUID sessionValue) {
+    partner.setSessionValue(sessionValue.toString());
+    this.datastore.save(partner);
+  }
+
+  public Optional<Partner> getPartnerBySession(String sessionValue) {
+    List<Partner> partners = datastore.createQuery(Partner.class).field("sessionValue").equal(sessionValue).asList();
+    if (partners.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(partners.get(0));
+  }
+
 	// getting a product with partnerId and productId
-	public String getProduct(String partnerId, String productId){;
+	public String getProduct(String partnerId, String productId) {
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
 		if (partners.size() == 0) {
 			System.out.println("wrong partnerId"); // debugging
@@ -68,7 +111,7 @@ public class Database {
 		}
 		Partner partner = partners.get(0);
 		Product product = partner.getProduct(productId);
-		ObjectMapper mapper = new ObjectIdMapper();    
+		ObjectMapper mapper = new ObjectIdMapper();
 		try {
 			System.out.println("returning: "+ mapper.writeValueAsString(product));
 			return mapper.writeValueAsString(product);
@@ -77,7 +120,7 @@ public class Database {
 		}
 		return null;
 	}
-	
+
 	// getting a user with partnerId, productId, userId
 	public User getUser(String partnerId, String productId, String userId){
 		List<User> users = datastore.createQuery(User.class).field("partnerId").equal(partnerId).field("productId").equal(productId).field("userId").equal(userId).asList();
@@ -86,10 +129,10 @@ public class Database {
 			return null;
 		}
 		User user = users.get(0);
-		
+
 		return user;
 	}
-	
+
 	// getting a user with partnerId, productId, quotaId
 	public String getQuota(String partnerId, String productId, String quotaId){
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
@@ -100,7 +143,7 @@ public class Database {
 		Partner partner = partners.get(0);
 		Product product = partner.getProduct(productId);
 		Quota quota = product.getQuota(quotaId);
-		ObjectMapper mapper = new ObjectIdMapper();    
+		ObjectMapper mapper = new ObjectIdMapper();
 		try {
 			System.out.println("returning: "+ mapper.writeValueAsString(quota));
 			return mapper.writeValueAsString(quota);
@@ -109,7 +152,7 @@ public class Database {
 		}
 		return null;
 	}
-	
+
 	// getting a list of tiers of a quota
 	public List<Tier> getTiers(String partnerId, String productId, String quotaId){
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
@@ -117,13 +160,13 @@ public class Database {
 			System.out.println("wrong partnerId"); // debugging
 			return null;
 		}
-		
+
 		Partner partner = partners.get(0);
 		Product product = partner.getProduct(productId);
 		Quota quota = product.getQuota(quotaId);
 		return quota.getTiers();
 	}
-	
+
 	// getting a single tier from a quota, given the tierId
 	public String getTier(String partnerId, String productId, String quotaId, String TierId){
 		List<Partner> partners = datastore.createQuery(Partner.class).field("partnerId").equal(partnerId).asList();
@@ -137,7 +180,7 @@ public class Database {
 		List<Tier> tiers =  quota.getTiers();
 		for(Tier t: tiers){
 			if(t.getId().equals(TierId)){
-				ObjectMapper mapper = new ObjectIdMapper();    
+				ObjectMapper mapper = new ObjectIdMapper();
 				try {
 					System.out.println("returning: "+ mapper.writeValueAsString(t));
 					return mapper.writeValueAsString(t);
@@ -148,20 +191,6 @@ public class Database {
 			}
 		}
 		return null;
-	}
-
-
-	// add a partner
-	public String addPartner(String partnerId, String name, String apiKey, String password) {
-		try {
-			Partner partner = new Partner(partnerId, name, apiKey);
-			partner.setPassword(password);
-			this.datastore.save(partner);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return "ok";
 	}
 
 	public String addQuota(String partnerId, String productId, String quotaId, String name, String type) {
@@ -280,11 +309,11 @@ public class Database {
 		}
 		return "ok";
 	}
-	
+
 	public boolean deleteUser(String partnerId, String productId, String userId) {
 	   final Query<User> deleteQuery = datastore.createQuery(User.class).field("userId").equal(userId);
 	   List<User> results = deleteQuery.asList();
-	
+
 	   for (User u : results) {
 	     // TODO can/should we ever delete multiple?
 	     if (u.getPartner().getId().equals(partnerId) && u.getProduct().getId().equals(productId)) {
