@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <title>Quota-Billing</title>
+</head>
+<body>
+<div>
+    <h1>Log-In</h1>
+    <input type="text" id="logInName" placeholder="Username">
+    <input type="password" id="logInPassword" placeholder="Password">
+    <button type="button" id="logInButton">Log-In</button>
+</div>
+<div>
+    <h1>Sign-Up</h1>
+    <input type="text" id="signUpName" placeholder="Username">
+    <input type="password" id="signUpPassword" placeholder="Password">
+    <button type="button" id="signUpButton">Sign-Up</button>
+</div>
+
+<script src="/js/jquery-2.1.1.min.js"></script>
+<script>
+    $("#logInButton").click(function () {
+        $.post("/logIn", {
+            "name": $("#logInName").val(),
+            "password": $("#logInPassword").val()
+        }, function () {
+            window.location.href = "/dashboard";
+        }).fail(function () {
+            alert("Error Logging In");
+        });
+    });
+    $("#signUpButton").click(function () {
+        $.post("/signUp", {
+            "name": $("#signUpName").val(),
+            "password": $("#signUpPassword").val()
+        }, function () {
+            window.location.href = "/dashboard";
+        }).fail(function () {
+            alert("Error Signing Up");
+        });
+    });
+
+</script>
+</body>
+</html>
