@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import edu.rosehulman.quotabilling.models.*;
+import edu.rosehulman.quotabilling.util.Hasher;
+import edu.rosehulman.quotabilling.util.ObjectIdMapper;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.query.Query;

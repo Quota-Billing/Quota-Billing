@@ -1,5 +1,7 @@
-package edu.rosehulman.quotabilling;
+package edu.rosehulman.quotabilling.controllers;
 
+import edu.rosehulman.quotabilling.clients.BillingClient;
+import edu.rosehulman.quotabilling.Database;
 import org.apache.http.HttpException;
 import spark.Request;
 import spark.Response;

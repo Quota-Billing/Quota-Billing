@@ -1,9 +1,13 @@
-package edu.rosehulman.quotabilling;
+package edu.rosehulman.quotabilling.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import edu.rosehulman.quotabilling.clients.BillingClient;
+import edu.rosehulman.quotabilling.Database;
+import edu.rosehulman.quotabilling.Paths;
+import edu.rosehulman.quotabilling.clients.QuotaClient;
 import edu.rosehulman.quotabilling.models.Partner;
 import org.apache.http.HttpException;
 import spark.Request;
