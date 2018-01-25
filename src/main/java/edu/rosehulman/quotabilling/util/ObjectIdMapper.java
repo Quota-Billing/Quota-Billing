@@ -1,4 +1,4 @@
-package edu.rosehulman.quotabilling;
+package edu.rosehulman.quotabilling.util;
 
 import org.bson.types.ObjectId;
 

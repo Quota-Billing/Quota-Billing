@@ -1,7 +1,8 @@
-package edu.rosehulman.quotabilling;
+package edu.rosehulman.quotabilling.clients;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
+import edu.rosehulman.quotabilling.Paths;
 
 public class BillingClient {
 
