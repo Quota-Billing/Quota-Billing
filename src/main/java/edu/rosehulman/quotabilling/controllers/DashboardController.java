@@ -19,6 +19,6 @@ public class DashboardController implements Route {
     }
     Partner partner = partnerOptional.get();
 
-    return String.format("Welcome, %s<br/>Api key: %s<br/><br/><a href='/logout'>Logout</a><br/><br/><div><form method=\"post\" action=\"setConfig\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"uploaded_file\" accept=\".json\"><br/><br/><button>Upload JSON</button></form></div>", partner.getName(), partner.getApikey());
+    return String.format("Welcome, %s<br/>Api key: %s<br/><br/><a href='/logout'>Logout</a><br/><br/><div><form method=\"post\" action=\"setConfig\" enctype=\"multipart/form-data\"><input type=\"file\" name=\"uploaded_file\" accept=\".json\"><br/><br/><button>Upload JSON</button></form><br/><br/><a href=\"https://github.com/Quota-Billing/Java-SDK#sampleconfigjson\" target=\"_blank\">Sample JSON Config File</a></div>", partner.getName(), partner.getApikey());
   }
 }
