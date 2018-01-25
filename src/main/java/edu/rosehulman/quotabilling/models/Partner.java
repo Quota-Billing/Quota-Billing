@@ -3,7 +3,7 @@ package edu.rosehulman.quotabilling.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import edu.rosehulman.quotabilling.ObjectIdSerializer;
+import edu.rosehulman.quotabilling.util.ObjectIdSerializer;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;

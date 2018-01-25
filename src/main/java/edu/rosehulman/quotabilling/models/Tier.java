@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import edu.rosehulman.quotabilling.ObjectIdSerializer;
+import edu.rosehulman.quotabilling.util.ObjectIdSerializer;
 
 @Entity("tier")
 public class Tier {
