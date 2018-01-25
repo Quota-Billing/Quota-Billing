@@ -29,9 +29,9 @@ public class Paths {
   
   public static final String GET_TIER = "partner/:partnerId/product/:productId/quota/:quotaId/tier/:tierId";
 
-  public static final String SIGN_UP = "/signUp";
+  public static final String SIGN_UP = "/signup-login.html";
 
-  public static final String LOG_IN = "/logIn";
+  public static final String LOG_IN = "/signup-login.html";
 
   public static final String LOG_OUT = "/logout";
 
