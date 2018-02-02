@@ -296,7 +296,7 @@ public class Database {
 				System.out.println("wrong quotaId");
 				return "Wrong quotaId";
 			}
-			Tier tier = new Tier(quotaId, name, Integer.valueOf(max), Double.valueOf(price));
+			Tier tier = new Tier(tierId, name, Integer.valueOf(max), Double.valueOf(price));
 			tier.setPartner(partner);
 			tier.setProduct(product);
 			tier.setQuota(quota);
