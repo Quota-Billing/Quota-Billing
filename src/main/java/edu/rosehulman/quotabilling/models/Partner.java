@@ -38,8 +38,19 @@ public class Partner {
 	@Property
 	@JsonProperty("sessionValue")
 	private String sessionValue;
+	@Property
+	@JsonProperty("webhook")
+	private String webhook;
 
 	public Partner() {
+	}
+	
+	public void setWebhook(String webhook){
+		this.webhook = webhook;
+	}
+
+	public String getWebhook(){
+		return this.webhook;
 	}
 
 	@JsonIgnore
