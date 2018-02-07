@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+
 import edu.rosehulman.quotabilling.models.*;
 import edu.rosehulman.quotabilling.util.Hasher;
 import edu.rosehulman.quotabilling.util.ObjectIdMapper;
@@ -91,6 +92,15 @@ public class Database {
     return partner;
   }
 
+	public String UpdatePartner(Partner partner){
+		Query<Partner> query = this.datastore.createQuery(Partner.class).field("id").equal(partner.getObjectId());
+		List<Partner> list = query.asList();
+		System.out.println(list.size());
+		UpdateOperations<Partner> op = this.datastore.createUpdateOperations(Partner.class).set("webhook",partner.getWebhook());
+		this.datastore.update(query, op);
+		return "ok";
+	}
+	
   public void updatePartnerSession(Partner partner, UUID sessionValue) {
     partner.setSessionValue(sessionValue.toString());
     this.datastore.save(partner);
