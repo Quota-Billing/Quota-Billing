@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import edu.rosehulman.quotabilling.clients.BillingClient;
 import edu.rosehulman.quotabilling.Database;
-import edu.rosehulman.quotabilling.Paths;
+import edu.rosehulman.quotabilling.clients.BillingClient;
 import edu.rosehulman.quotabilling.clients.QuotaClient;
 import edu.rosehulman.quotabilling.models.Partner;
 import org.apache.http.HttpException;
@@ -92,7 +91,9 @@ public class SetConfigController implements Route {
     if (!QuotaClient.getInstance().setConfig(mapper.writeValueAsString(tempPartner))) {
       throw new HttpException("Setting config to quota server failed");
     }
-
-    return "Config Uploaded! <a href='" + Paths.DASHBOARD + "'>Continue...</a>";
+    response.cookie("configUploaded", "true", 60);
+    response.redirect("dashboard");
+    return "";
+    //return "Config Uploaded! <a href='" + Paths.DASHBOARD + "'>Continue...</a>";
   }
 }
