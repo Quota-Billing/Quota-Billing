@@ -92,7 +92,7 @@ public class Database {
     return partner;
   }
 
-	public String UpdatePartner(Partner partner){
+	public String updatePartner(Partner partner){
 		Query<Partner> query = this.datastore.createQuery(Partner.class).field("id").equal(partner.getObjectId());
 		List<Partner> list = query.asList();
 		System.out.println(list.size());

@@ -39,6 +39,11 @@ public class SetConfigController implements Route {
 
     JsonObject partnerJsonObject = new JsonParser().parse(body).getAsJsonObject();
 
+    String billingWebHook = partnerJsonObject.get("billingWebHook").getAsString();
+    partner.setWebhook(billingWebHook);
+
+    Database.getInstance().updatePartner(partner);
+
     JsonArray productsJsonArray = partnerJsonObject.getAsJsonArray("products");
     productsJsonArray.iterator().forEachRemaining(productJsonElement -> {
       JsonObject productJsonObject = productJsonElement.getAsJsonObject();
