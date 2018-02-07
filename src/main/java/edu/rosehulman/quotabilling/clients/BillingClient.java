@@ -82,4 +82,11 @@ public class BillingClient {
 
 		return response.getStatus() == 200;
 	}
+
+	public boolean updatePartner(String partnerId) throws Exception {
+		HttpResponse<String> response = Unirest.put(Paths.BILLING_BASE + "updatePartner/{partnerId}")
+				.routeParam("partnerId", partnerId).asString();
+
+		return response.getStatus() == 200;
+	}
 }

@@ -43,6 +43,7 @@ public class SetConfigController implements Route {
     partner.setWebhook(billingWebHook);
 
     Database.getInstance().updatePartner(partner);
+    BillingClient.getInstance().updatePartner(partner.getId());
 
     JsonArray productsJsonArray = partnerJsonObject.getAsJsonArray("products");
     productsJsonArray.iterator().forEachRemaining(productJsonElement -> {

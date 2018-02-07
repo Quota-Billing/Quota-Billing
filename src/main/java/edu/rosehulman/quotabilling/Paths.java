@@ -9,7 +9,7 @@ public class Paths {
   public static final String ADD_USER = "partner/:partnerId/product/:productId/user/:userId";
 
   //public static final String BILLING_BASE = "http://srproj-18.csse.rose-hulman.edu:8085/";
-  public static final String BILLING_BASE = "http://localhost:8085/";
+  public static final String BILLING_BASE = "http://137.112.233.90:8085/";
 
   public static final String ADD_Tier = "partner/:partnerId/product/:productId/quota/:quotaId/name/:name/tier/:tierId/price/:price/max/:max";
 
